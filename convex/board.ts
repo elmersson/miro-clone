@@ -29,7 +29,7 @@ export const create = mutation({
 
     const randomImage = images[Math.floor(Math.random() * images.length)];
 
-    console.log(randomImage, "TEST")
+    console.log(randomImage, "TEST");
 
     const board = await ctx.db.insert("boards", {
       title: args.title,
@@ -56,11 +56,7 @@ export const remove = mutation({
 
     const existingFavorite = await ctx.db
       .query("userFavorites")
-      .withIndex("by_user_board", (q) => 
-        q
-          .eq("userId", userId)
-          .eq("boardId", args.id)
-      )
+      .withIndex("by_user_board", (q) => q.eq("userId", userId).eq("boardId", args.id))
       .unique();
 
     if (existingFavorite) {
@@ -87,7 +83,7 @@ export const update = mutation({
     }
 
     if (title.length > 60) {
-      throw new Error("Title cannot be longer than 60 characters")
+      throw new Error("Title cannot be longer than 60 characters");
     }
 
     const board = await ctx.db.patch(args.id, {
@@ -117,11 +113,7 @@ export const favorite = mutation({
 
     const existingFavorite = await ctx.db
       .query("userFavorites")
-      .withIndex("by_user_board", (q) => 
-        q
-          .eq("userId", userId)
-          .eq("boardId", board._id)
-      )
+      .withIndex("by_user_board", (q) => q.eq("userId", userId).eq("boardId", board._id))
       .unique();
 
     if (existingFavorite) {
@@ -137,7 +129,6 @@ export const favorite = mutation({
     return board;
   },
 });
-
 
 export const unfavorite = mutation({
   args: { id: v.id("boards") },
@@ -158,11 +149,7 @@ export const unfavorite = mutation({
 
     const existingFavorite = await ctx.db
       .query("userFavorites")
-      .withIndex("by_user_board", (q) => 
-        q
-          .eq("userId", userId)
-          .eq("boardId", board._id)
-      )
+      .withIndex("by_user_board", (q) => q.eq("userId", userId).eq("boardId", board._id))
       .unique();
 
     if (!existingFavorite) {

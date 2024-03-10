@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { useMutation } from 'convex/react';
-import { FunctionReference, FunctionReturnType, OptionalRestArgs } from 'convex/server';
+import { useState } from "react";
+import { useMutation } from "convex/react";
+import { FunctionReference, FunctionReturnType, OptionalRestArgs } from "convex/server";
 
-const useApiMutation = <Mutation extends FunctionReference<'mutation'>>(
+const useApiMutation = <Mutation extends FunctionReference<"mutation">>(
   mutationFunction: Mutation
 ): {
   mutate: (...payload: OptionalRestArgs<Mutation>) => Promise<FunctionReturnType<Mutation>>;
@@ -15,13 +15,15 @@ const useApiMutation = <Mutation extends FunctionReference<'mutation'>>(
     setPending(true);
     return apiMutation(...payload)
       .finally(() => setPending(false))
-      .then(result => result)
-      .catch(error => { throw error });
+      .then((result) => result)
+      .catch((error) => {
+        throw error;
+      });
   };
 
   return {
     mutate,
-    pending
+    pending,
   };
 };
 
