@@ -17,9 +17,6 @@ export const Room = ({ children, roomId, fallback }: RoomProps) => {
       id={roomId}
       initialPresence={{
         cursor: null,
-        selection: [],
-        pencilDraft: null,
-        penColor: null,
       }}
     >
       <ClientSideSuspense fallback={fallback}>{() => children}</ClientSideSuspense>
