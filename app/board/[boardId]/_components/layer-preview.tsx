@@ -10,6 +10,7 @@ import { Ellipse } from "./ellipse";
 import { Note } from "./note";
 import { Path } from "./path";
 import { Rectangle } from "./rectangle";
+import { colorToCss } from "@/lib/utils";
 
 interface LayerPreviewProps {
   id: string;
@@ -33,7 +34,7 @@ export const LayerPreview = memo(({ id, onLayerPointerDown, selectionColor }: La
           onPointerDown={(e: PointerEvent<Element>) => onLayerPointerDown(e, id)}
           x={layer.x}
           y={layer.y}
-          fill={"#000"}
+          fill={layer.fill ? colorToCss(layer.fill) : "#000"}
           stroke={selectionColor}
         />
       );
