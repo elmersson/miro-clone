@@ -16,6 +16,7 @@ import { Button } from "./ui/button";
 import { Id } from "@/convex/_generated/dataModel";
 import { ConfirmModal } from "./confirm-modal";
 import { useRenameModal } from "@/store/use-rename-modal";
+import { ModeToggleText } from "./mode-toggle";
 
 interface ActionsProps {
   children: React.ReactNode;
@@ -65,6 +66,7 @@ export const Actions = ({ children, side, sideOffset, id, title }: ActionsProps)
             Delete
           </Button>
         </ConfirmModal>
+        <ModeToggleText />
       </DropdownMenuContent>
     </DropdownMenu>
   );
