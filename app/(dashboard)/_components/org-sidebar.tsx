@@ -9,6 +9,7 @@ import { useSearchParams } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "next-themes";
 
 const font = Poppins({
   subsets: ["latin"],
@@ -17,6 +18,11 @@ const font = Poppins({
 export const OrgSidebar = () => {
   const searchParams = useSearchParams();
   const favorites = searchParams.get("favorites");
+
+  const { resolvedTheme } = useTheme();
+
+  const themeMode = resolvedTheme === "light" ? "white" : "black";
+
   return (
     <div className="hidden lg:flex flex-col space-y-6 w-[206px] pl-5 pt-5">
       <Link href="/">
@@ -41,7 +47,7 @@ export const OrgSidebar = () => {
               borderRadius: "8px",
               border: "1px solid #E5E7EB",
               justifyContent: "space-between",
-              backgroundColor: "white",
+              backgroundColor: themeMode,
             },
           },
         }}
