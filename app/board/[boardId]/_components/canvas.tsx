@@ -60,10 +60,13 @@ export const Canvas = ({ boardId }: CanvasProps) => {
   const canUndo = useCanUndo();
   const canRedo = useCanRedo();
 
+  const [copiedLayerId, setCopiedLayerId] = useState<string | null>(null);
+  const [isEditingText, setIsEditingText] = useState(false);
+
   const insertLayer = useMutation(
     (
       { storage, setMyPresence },
-      layerType: LayerType.Ellipse | LayerType.Rectangle | LayerType.Text | LayerType.Note,
+      layerType: LayerType.Ellipse | LayerType.Rectangle | LayerType.Text | LayerType.Note | LayerType.Pew,
       position: Point
     ) => {
       const liveLayers = storage.get("layers");
@@ -73,14 +76,26 @@ export const Canvas = ({ boardId }: CanvasProps) => {
 
       const liveLayerIds = storage.get("layerIds");
       const layerId = nanoid();
-      const layer = new LiveObject({
-        type: layerType,
-        x: position.x,
-        y: position.y,
-        height: 100,
-        width: 100,
-        fill: lastUsedColor,
-      });
+      let layer;
+
+      if (layerType === LayerType.Pew) {
+        layer = new LiveObject({
+          type: layerType,
+          x: position.x - 25,
+          y: position.y - 25,
+          height: 50,
+          width: 50,
+        });
+      } else {
+        layer = new LiveObject({
+          type: layerType,
+          x: position.x - 50,
+          y: position.y - 50,
+          height: 100,
+          width: 100,
+          fill: lastUsedColor,
+        });
+      }
 
       liveLayerIds.push(layerId);
       liveLayers.set(layerId, layer);
@@ -89,6 +104,42 @@ export const Canvas = ({ boardId }: CanvasProps) => {
       setCanvasState({ mode: CanvasMode.None });
     },
     [lastUsedColor]
+  );
+
+  const copyLayer = useMutation(({ self }) => {
+    const selection = self.presence.selection;
+    if (selection.length > 0) {
+      const layerIdToCopy = selection[0];
+      setCopiedLayerId(layerIdToCopy);
+    }
+  }, []);
+
+  const pasteLayer = useMutation(
+    ({ storage, setMyPresence }) => {
+      if (!copiedLayerId) return;
+
+      const copiedLayer = storage.get("layers").get(copiedLayerId);
+      if (!copiedLayer) return;
+
+      const layerDetails = copiedLayer.toImmutable();
+
+      const newPosition = {
+        x: layerDetails.x + 10,
+        y: layerDetails.y + 10,
+      };
+
+      const newLayer = new LiveObject({
+        ...layerDetails,
+        ...newPosition,
+      });
+
+      const layerId = nanoid();
+      storage.get("layerIds").push(layerId);
+      storage.get("layers").set(layerId, newLayer);
+
+      setMyPresence({ selection: [layerId] }, { addToHistory: true });
+    },
+    [copiedLayerId]
   );
 
   const translateSelectedLayers = useMutation(
@@ -357,9 +408,12 @@ export const Canvas = ({ boardId }: CanvasProps) => {
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
       switch (e.key) {
-        // case "Backspace":
-        //   deleteLayers();
-        //   break;
+        case "Backspace":
+          if (!isEditingText) {
+            deleteLayers();
+          }
+          break;
+
         case "z": {
           if (e.ctrlKey || e.metaKey) {
             if (e.shiftKey) {
@@ -370,6 +424,22 @@ export const Canvas = ({ boardId }: CanvasProps) => {
             break;
           }
         }
+
+        case "c": {
+          if (e.ctrlKey || e.metaKey) {
+            e.preventDefault();
+            copyLayer();
+            return;
+          }
+        }
+
+        case "v": {
+          if (e.ctrlKey || e.metaKey) {
+            e.preventDefault();
+            pasteLayer();
+            return;
+          }
+        }
       }
     }
 
@@ -378,7 +448,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     return () => {
       document.removeEventListener("keydown", onKeyDown);
     };
-  }, [deleteLayers, history]);
+  }, [deleteLayers, history, isEditingText]);
 
   return (
     <main className="h-full w-full relative bg-neutral-100 dark:bg-neutral-900 touch-none">
@@ -412,6 +482,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
               id={layerId}
               onLayerPointerDown={onLayerPointerDown}
               selectionColor={layerIdsToColorSelection[layerId]}
+              setIsEditingText={setIsEditingText}
             />
           ))}
           <SelectionBox onResizeHandlePointerDown={onResizeHandlePointerDown} />

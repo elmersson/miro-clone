@@ -2,6 +2,7 @@ import { cn, colorToCss } from "@/lib/utils";
 import { useMutation } from "@/liveblocks.config";
 import { TextLayer } from "@/types/canvas";
 import { Kalam } from "next/font/google";
+import { Dispatch, SetStateAction } from "react";
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
 const font = Kalam({
@@ -23,9 +24,10 @@ interface TextProps {
   layer: TextLayer;
   onPointerDown: (e: React.PointerEvent, id: string) => void;
   selectionColor?: string;
+  setIsEditingText: Dispatch<SetStateAction<boolean>>;
 }
 
-export const Text = ({ layer, onPointerDown, id, selectionColor }: TextProps) => {
+export const Text = ({ layer, onPointerDown, id, selectionColor, setIsEditingText }: TextProps) => {
   const { x, y, width, height, fill, value } = layer;
 
   const updateValue = useMutation(({ storage }, newValue: string) => {
@@ -60,6 +62,8 @@ export const Text = ({ layer, onPointerDown, id, selectionColor }: TextProps) =>
           fontSize: calculateFontSize(width, height),
           color: fill ? colorToCss(fill) : "#000",
         }}
+        onFocus={() => setIsEditingText(true)}
+        onBlur={() => setIsEditingText(false)}
       />
     </foreignObject>
   );
