@@ -7,6 +7,7 @@ import { EmptySearch } from "./empty-search";
 import { api } from "@/convex/_generated/api";
 import { BoardCard } from "./board-card";
 import { NewBoardButton } from "./new-board-button";
+import { JokeBoardCard } from "./board-card/joke-board";
 
 interface BoardListProps {
   orgId: string;
@@ -62,6 +63,7 @@ export const BoardList = ({ orgId, query }: BoardListProps) => {
             isFavorite={board.isFavorite}
           />
         ))}
+        <JokeBoardCard />
       </div>
     </div>
   );
