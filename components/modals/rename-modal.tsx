@@ -46,7 +46,7 @@ export const RenameModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="dark:bg-black">
         <DialogHeader>
           <DialogTitle>Edit board title</DialogTitle>
         </DialogHeader>

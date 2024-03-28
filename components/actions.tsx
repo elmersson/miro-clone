@@ -24,9 +24,10 @@ interface ActionsProps {
   sideOffset?: DropdownMenuContentProps["sideOffset"];
   id: Id<"boards">;
   title: string;
+  modeToggle?: boolean;
 }
 
-export const Actions = ({ children, side, sideOffset, id, title }: ActionsProps) => {
+export const Actions = ({ children, side, sideOffset, id, title, modeToggle = true }: ActionsProps) => {
   const { mutate, pending } = useApiMutation(api.board.remove);
   const { onOpen } = useRenameModal();
 
@@ -66,7 +67,7 @@ export const Actions = ({ children, side, sideOffset, id, title }: ActionsProps)
             Delete
           </Button>
         </ConfirmModal>
-        <ModeToggleText />
+        {modeToggle && <ModeToggleText />}
       </DropdownMenuContent>
     </DropdownMenu>
   );
