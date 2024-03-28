@@ -75,8 +75,6 @@ export type PewLayer = {
   y: number;
   height: number;
   width: number;
-  fill: Color;
-  value?: string;
 };
 
 export type Point = {
@@ -113,7 +111,7 @@ export type CanvasState =
     }
   | {
       mode: CanvasMode.Inserting,
-      layerType: LayerType.Ellipse | LayerType.Rectangle | LayerType.Text | LayerType.Note;
+      layerType: LayerType.Ellipse | LayerType.Rectangle | LayerType.Text | LayerType.Note | LayerType.Pew;
     }
   | {
       mode: CanvasMode.Pencil,
@@ -138,4 +136,4 @@ export enum CanvasMode {
   Pencil,
 };
 
-export type Layer = RectangleLayer | EllipseLayer | PathLayer | TextLayer | NoteLayer
+export type Layer = RectangleLayer | EllipseLayer | PathLayer | TextLayer | NoteLayer | PewLayer;

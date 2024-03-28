@@ -80,12 +80,12 @@ export const Toolbar = ({ canvasState, setCanvasState, undo, redo, canUndo, canR
           onClick={() => setCanvasState({ mode: CanvasMode.Pencil })}
           isActive={canvasState.mode === CanvasMode.Pencil}
         />
-        {/* <ToolButton
+        <ToolButton
           label="Pew Pew"
           icon={Drill}
           onClick={() => setCanvasState({ mode: CanvasMode.Inserting, layerType: LayerType.Pew })}
-          isActive={false}
-        /> */}
+          isActive={canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Pew}
+        />
       </div>
       <div className="bg-white dark:bg-black rounded-md p-1.5 flex flex-col items-center shadow-md">
         <ToolButton label="Undo" icon={Undo2} onClick={undo} isDisabled={!canUndo} />

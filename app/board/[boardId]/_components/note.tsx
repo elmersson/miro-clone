@@ -5,6 +5,7 @@ import { NoteLayer } from "@/types/canvas";
 import { cn, colorToCss, getContrastingTextColor } from "@/lib/utils";
 import { useMutation } from "@/liveblocks.config";
 import { useTheme } from "next-themes";
+import { Dispatch, SetStateAction } from "react";
 
 const font = Kalam({
   subsets: ["latin"],
@@ -25,9 +26,10 @@ interface NoteProps {
   layer: NoteLayer;
   onPointerDown: (e: React.PointerEvent, id: string) => void;
   selectionColor?: string;
+  setIsEditingText: Dispatch<SetStateAction<boolean>>;
 }
 
-export const Note = ({ layer, onPointerDown, id, selectionColor }: NoteProps) => {
+export const Note = ({ layer, onPointerDown, id, selectionColor, setIsEditingText }: NoteProps) => {
   const { x, y, width, height, fill, value } = layer;
 
   const updateValue = useMutation(({ storage }, newValue: string) => {
@@ -61,6 +63,8 @@ export const Note = ({ layer, onPointerDown, id, selectionColor }: NoteProps) =>
           fontSize: calculateFontSize(width, height),
           color: fill ? getContrastingTextColor(fill) : "#000",
         }}
+        onFocus={() => setIsEditingText(true)}
+        onBlur={() => setIsEditingText(false)}
       />
     </foreignObject>
   );
