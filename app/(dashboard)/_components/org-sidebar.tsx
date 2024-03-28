@@ -22,6 +22,7 @@ export const OrgSidebar = () => {
   const { resolvedTheme } = useTheme();
 
   const themeMode = resolvedTheme === "light" ? "white" : "black";
+  const themeModeBorder = resolvedTheme === "light" ? "#E5E7EB" : "#353535";
 
   return (
     <div className="hidden lg:flex flex-col space-y-6 w-[206px] pl-5 pt-5">
@@ -45,7 +46,7 @@ export const OrgSidebar = () => {
               padding: "6px",
               width: "100%",
               borderRadius: "8px",
-              border: "1px solid #E5E7EB",
+              border: `1px solid ${themeModeBorder}`,
               justifyContent: "space-between",
               backgroundColor: themeMode,
             },

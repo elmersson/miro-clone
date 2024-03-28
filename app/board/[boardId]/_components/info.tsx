@@ -36,12 +36,12 @@ export const Info = ({ boardId }: InfoProps) => {
   if (!data) return <InfoSkeleton />;
 
   return (
-    <div className="absolute top-2 left-2 bg-white rounded-md px-1.5 h-12 flex items-center shadow-md">
+    <div className="absolute top-2 left-2 bg-white dark:bg-black rounded-md px-1.5 h-12 flex items-center shadow-md">
       <Hint label="Go to boards" side="bottom" sideOffset={10}>
         <Button asChild variant="board" className="px-2">
           <Link href="/">
             <Image src="/logo.svg" alt="Board logo" height={40} width={40} />
-            <span className={cn("font-semibold text-xl ml-2 text-black", font.className)}>Board</span>
+            <span className={cn("font-semibold text-xl ml-2", font.className)}>Liro</span>
           </Link>
         </Button>
       </Hint>
@@ -66,6 +66,6 @@ export const Info = ({ boardId }: InfoProps) => {
 };
 export const InfoSkeleton = () => {
   return (
-    <div className="absolute top-2 left-2 bg-white rounded-md px-1.5 h-12 flex items-center shadow-md w-[300px]" />
+    <div className="absolute top-2 left-2 bg-white dark:bg-black rounded-md px-1.5 h-12 flex items-center shadow-md w-[300px]" />
   );
 };
