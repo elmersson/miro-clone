@@ -79,6 +79,9 @@ export const Canvas = ({ boardId }: CanvasProps) => {
       let layer;
 
       if (layerType === LayerType.Pew) {
+        const audio = new Audio("/sounds/pew-sound.mp3");
+        audio.play().catch((error) => console.error("Error playing the sound.", error));
+
         layer = new LiveObject({
           type: layerType,
           x: position.x - 25,
@@ -101,7 +104,9 @@ export const Canvas = ({ boardId }: CanvasProps) => {
       liveLayers.set(layerId, layer);
 
       setMyPresence({ selection: [layerId] }, { addToHistory: true });
-      setCanvasState({ mode: CanvasMode.None });
+      if (layerType !== LayerType.Pew) {
+        setCanvasState({ mode: CanvasMode.None });
+      }
     },
     [lastUsedColor]
   );
