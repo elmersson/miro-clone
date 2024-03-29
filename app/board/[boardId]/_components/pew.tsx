@@ -1,7 +1,4 @@
-import { cn, colorToCss } from "@/lib/utils";
-import { useMutation } from "@/liveblocks.config";
-import { PewLayer, TextLayer } from "@/types/canvas";
-import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
+import { PewLayer } from "@/types/canvas";
 import Image from "next/image";
 
 interface PewProps {
