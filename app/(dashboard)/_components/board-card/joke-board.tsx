@@ -25,7 +25,7 @@ export const JokeBoardCard = () => {
           isFavorite={isFavorite}
           title="DONT TOUCH"
           authorLabel="Rasmus"
-          createdAtLabel="1 hour"
+          createdAtLabel="1 hour ago"
           onClick={() => setIsFavorite(!isFavorite)}
           disabled={false}
         />

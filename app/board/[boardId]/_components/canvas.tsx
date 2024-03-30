@@ -34,6 +34,7 @@ import { SelectionBox } from "./selection-box";
 import { SelectionTools } from "./selection-tools";
 import { CursorsPresence } from "./cursors-presence";
 import { Id } from "@/convex/_generated/dataModel";
+import { Timer } from "./timer";
 
 const MAX_LAYERS = 100;
 
@@ -60,7 +61,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
   const canUndo = useCanUndo();
   const canRedo = useCanRedo();
 
-  const [copiedLayerId, setCopiedLayerId] = useState<string | null>(null);
+  const [copiedLayerIds, setCopiedLayerIds] = useState<string[]>([]);
   const [isEditingText, setIsEditingText] = useState(false);
 
   const insertLayer = useMutation(
@@ -113,38 +114,40 @@ export const Canvas = ({ boardId }: CanvasProps) => {
 
   const copyLayer = useMutation(({ self }) => {
     const selection = self.presence.selection;
-    if (selection.length > 0) {
-      const layerIdToCopy = selection[0];
-      setCopiedLayerId(layerIdToCopy);
-    }
+    setCopiedLayerIds(selection);
   }, []);
 
   const pasteLayer = useMutation(
     ({ storage, setMyPresence }) => {
-      if (!copiedLayerId) return;
+      if (copiedLayerIds.length === 0) return;
 
-      const copiedLayer = storage.get("layers").get(copiedLayerId);
-      if (!copiedLayer) return;
+      const newSelection: string[] = [];
 
-      const layerDetails = copiedLayer.toImmutable();
+      copiedLayerIds.forEach((copiedLayerId) => {
+        const copiedLayer = storage.get("layers").get(copiedLayerId);
+        if (!copiedLayer) return;
 
-      const newPosition = {
-        x: layerDetails.x + 10,
-        y: layerDetails.y + 10,
-      };
+        const layerDetails = copiedLayer.toImmutable();
+        const newPosition = {
+          x: layerDetails.x + 10,
+          y: layerDetails.y + 10,
+        };
 
-      const newLayer = new LiveObject({
-        ...layerDetails,
-        ...newPosition,
+        const newLayer = new LiveObject({
+          ...layerDetails,
+          ...newPosition,
+        });
+
+        const layerId = nanoid();
+        storage.get("layerIds").push(layerId);
+        storage.get("layers").set(layerId, newLayer);
+
+        newSelection.push(layerId);
       });
 
-      const layerId = nanoid();
-      storage.get("layerIds").push(layerId);
-      storage.get("layers").set(layerId, newLayer);
-
-      setMyPresence({ selection: [layerId] }, { addToHistory: true });
+      setMyPresence({ selection: newSelection }, { addToHistory: true });
     },
-    [copiedLayerId]
+    [copiedLayerIds]
   );
 
   const translateSelectedLayers = useMutation(
@@ -455,10 +458,39 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     };
   }, [deleteLayers, history, isEditingText]);
 
+  const startTimer = useMutation(({ setMyPresence }, duration: number) => {
+    const startTime = Date.now();
+    setMyPresence({
+      timer: {
+        mode: CanvasMode.Timer,
+        startTime: startTime,
+        duration: duration,
+        isPlaying: true,
+      },
+    });
+  }, []);
+
+  const pauseTimer = useMutation(({ setMyPresence, self }) => {
+    const presence = self.presence;
+
+    if (presence.timer) {
+      const elapsedTime = Date.now() - presence.timer.startTime;
+      const remainingDuration = Math.max(presence.timer.duration - elapsedTime, 0);
+      setMyPresence({
+        timer: {
+          ...presence.timer,
+          duration: remainingDuration,
+          isPlaying: false,
+        },
+      });
+    }
+  }, []);
+
   return (
     <main className="h-full w-full relative bg-neutral-100 dark:bg-neutral-900 touch-none">
       <Info boardId={boardId} />
       <Participants />
+      <Timer startTimer={startTimer} pauseTimer={pauseTimer} />
       <Toolbar
         canvasState={canvasState}
         setCanvasState={setCanvasState}
