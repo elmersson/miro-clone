@@ -96,6 +96,13 @@ export enum Side {
   Right = 8,
 };
 
+export type TimerState = {
+  mode: CanvasMode.Timer;
+  startTime: number;
+  duration: number;
+  isPlaying: boolean;
+};
+
 export type CanvasState = 
   | {
       mode: CanvasMode.None;
@@ -124,7 +131,7 @@ export type CanvasState =
       mode: CanvasMode.Resizing,
       initialBounds: XYWH;
       corner: Side;
-    };
+    } | TimerState;
 
 export enum CanvasMode {
   None,
@@ -134,6 +141,7 @@ export enum CanvasMode {
   Inserting,
   Resizing,
   Pencil,
+  Timer
 };
 
 export type Layer = RectangleLayer | EllipseLayer | PathLayer | TextLayer | NoteLayer | PewLayer;

@@ -7,7 +7,7 @@ import {
 
 import { createRoomContext, createLiveblocksContext } from "@liveblocks/react";
 
-import { Layer, Color } from "@/types/canvas";
+import { Layer, Color, TimerState } from "@/types/canvas";
 
   
 const client = createClient({
@@ -64,6 +64,7 @@ type Presence = {
   selection: string[];
   pencilDraft: [x: number, y: number, pressure: number][] | null;
   penColor: Color | null;
+  timer?: TimerState;
 };
 
 // Optionally, Storage represents the shared document that persists in the
