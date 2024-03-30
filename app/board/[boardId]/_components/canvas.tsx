@@ -35,6 +35,7 @@ import { SelectionTools } from "./selection-tools";
 import { CursorsPresence } from "./cursors-presence";
 import { Id } from "@/convex/_generated/dataModel";
 import { Timer } from "./timer";
+import { Zoom } from "./zoom";
 
 const MAX_LAYERS = 100;
 
@@ -50,6 +51,8 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     mode: CanvasMode.None,
   });
   const [camera, setCamera] = useState<Camera>({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState<number>(1);
+
   const [lastUsedColor, setLastUsedColor] = useState<Color>({
     r: 0,
     g: 0,
@@ -157,8 +160,8 @@ export const Canvas = ({ boardId }: CanvasProps) => {
       }
 
       const offset = {
-        x: point.x - canvasState.current.x,
-        y: point.y - canvasState.current.y,
+        x: (point.x - canvasState.current.x) * zoom,
+        y: (point.y - canvasState.current.y) * zoom,
       };
 
       const liveLayers = storage.get("layers");
@@ -194,7 +197,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
         current,
       });
 
-      const ids = findIntersectingLayersWithRectangle(layerIds, layers, origin, current);
+      const ids = findIntersectingLayersWithRectangle(layerIds, layers, origin, current, zoom);
 
       setMyPresence({ selection: ids });
     },
@@ -303,7 +306,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     ({ setMyPresence }, e: PointerEvent) => {
       e.preventDefault();
 
-      const current = pointerEventToCanvasPoint(e, camera);
+      const current = pointerEventToCanvasPoint(e, camera, zoom);
 
       if (canvasState.mode === CanvasMode.Pressing) {
         startMultiSelection(current, canvasState.origin);
@@ -336,7 +339,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
 
   const onPointerDown = useCallback(
     (e: PointerEvent) => {
-      const point = pointerEventToCanvasPoint(e, camera);
+      const point = pointerEventToCanvasPoint(e, camera, zoom);
 
       if (canvasState.mode === CanvasMode.Inserting) {
         return;
@@ -354,7 +357,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
 
   const onPointerUp = useMutation(
     ({}, e) => {
-      const point = pointerEventToCanvasPoint(e, camera);
+      const point = pointerEventToCanvasPoint(e, camera, zoom);
 
       if (canvasState.mode === CanvasMode.None || canvasState.mode === CanvasMode.Pressing) {
         unselectLayers();
@@ -387,7 +390,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
       history.pause();
       e.stopPropagation();
 
-      const point = pointerEventToCanvasPoint(e, camera);
+      const point = pointerEventToCanvasPoint(e, camera, zoom);
 
       if (!self.presence.selection.includes(layerId)) {
         setMyPresence({ selection: [layerId] }, { addToHistory: true });
@@ -486,11 +489,20 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     }
   }, []);
 
+  const updateZoom = (newZoom: number) => {
+    if (newZoom < 0.1) return;
+
+    if (newZoom > 3) return;
+
+    setZoom(parseFloat(newZoom.toFixed(1)));
+  };
+
   return (
     <main className="h-full w-full relative bg-neutral-100 dark:bg-neutral-900 touch-none">
       <Info boardId={boardId} />
       <Participants />
       <Timer startTimer={startTimer} pauseTimer={pauseTimer} />
+      <Zoom zoom={zoom} updateZoom={updateZoom} />
       <Toolbar
         canvasState={canvasState}
         setCanvasState={setCanvasState}
@@ -499,7 +511,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
         undo={history.undo}
         redo={history.redo}
       />
-      <SelectionTools camera={camera} setLastUsedColor={setLastUsedColor} />
+      <SelectionTools camera={camera} setLastUsedColor={setLastUsedColor} zoom={zoom} />
       <svg
         className="h-[100vh] w-[100vw]"
         onWheel={onWheel}
@@ -510,7 +522,8 @@ export const Canvas = ({ boardId }: CanvasProps) => {
       >
         <g
           style={{
-            transform: `translate(${camera.x}px, ${camera.y}px)`,
+            transform: `translate(${camera.x}px, ${camera.y}px) scale(${zoom})`,
+            transformOrigin: "0 0",
           }}
         >
           {layerIds.map((layerId) => (
