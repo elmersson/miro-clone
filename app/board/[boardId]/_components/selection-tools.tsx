@@ -15,9 +15,10 @@ import { useDeleteLayers } from "@/hooks/use-delete-layers";
 interface SelectionToolsProps {
   camera: Camera;
   setLastUsedColor: (color: Color) => void;
+  zoom: number;
 }
 
-export const SelectionTools = memo(({ camera, setLastUsedColor }: SelectionToolsProps) => {
+export const SelectionTools = memo(({ camera, setLastUsedColor, zoom }: SelectionToolsProps) => {
   const selection = useSelf((me) => me.presence.selection);
 
   const moveToFront = useMutation(
@@ -80,8 +81,8 @@ export const SelectionTools = memo(({ camera, setLastUsedColor }: SelectionTools
     return null;
   }
 
-  const x = selectionBounds.width / 2 + selectionBounds.x + camera.x;
-  const y = selectionBounds.y + camera.y;
+  const x = (selectionBounds.width / 2 + selectionBounds.x + camera.x) * zoom;
+  const y = (selectionBounds.y + camera.y - 10) * zoom;
 
   return (
     <div
@@ -89,8 +90,8 @@ export const SelectionTools = memo(({ camera, setLastUsedColor }: SelectionTools
       style={{
         transform: `translate(
           calc(${x}px - 50%),
-          calc(${y - 16}px - 100%)
-        )`,
+          calc(${y}px - 100%)
+        ) `,
       }}
     >
       <ColorPicker onChange={setFill} />

@@ -33,7 +33,6 @@ export const Timer = ({ startTimer, pauseTimer }: TimerProps) => {
       }, 1000);
     } else {
       clearInterval(interval!);
-      pauseTimer();
       audioRef.current.pause();
     }
 

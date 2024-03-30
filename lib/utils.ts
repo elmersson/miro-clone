@@ -22,10 +22,11 @@ export function connectionIdToColor(connectionId: number): string {
 export function pointerEventToCanvasPoint(
   e: PointerEvent,
   camera: Camera,
-) {
+  zoom: number = 1,
+): Point {
   return {
-    x: Math.round(e.clientX) - camera.x,
-    y: Math.round(e.clientY) - camera.y,
+    x: (Math.round(e.clientX) - camera.x) / zoom,
+    y: (Math.round(e.clientY) - camera.y) / zoom,
   };
 };
 
@@ -34,10 +35,12 @@ export function colorToCss(color: Color) {
 }
 
 export function resizeBounds(
-  bounds: XYWH, 
-  corner: Side, 
-  point: Point
+  bounds: XYWH,
+  corner: Side,
+  point: Point,
 ): XYWH {
+  point = { x: point.x, y: point.y };
+  
   const result = {
     x: bounds.x,
     y: bounds.y,
@@ -73,15 +76,16 @@ export function findIntersectingLayersWithRectangle(
   layers: ReadonlyMap<string, Layer>,
   a: Point,
   b: Point,
-) {
+  zoom: number = 1
+): string[] {
   const rect = {
-    x: Math.min(a.x, b.x),
-    y: Math.min(a.y, b.y),
-    width: Math.abs(a.x - b.x),
-    height: Math.abs(a.y - b.y),
+    x: Math.min(a.x, b.x) * zoom,
+    y: Math.min(a.y, b.y) * zoom,
+    width: Math.abs(a.x - b.x) * zoom,
+    height: Math.abs(a.y - b.y) * zoom,
   };
 
-  const ids = [];
+  const ids: string[] = [];
 
   for (const layerId of layerIds) {
     const layer = layers.get(layerId);
@@ -94,7 +98,7 @@ export function findIntersectingLayersWithRectangle(
 
     if (
       rect.x + rect.width > x &&
-      rect.x < x + width && 
+      rect.x < x + width &&
       rect.y + rect.height > y &&
       rect.y < y + height
     ) {
