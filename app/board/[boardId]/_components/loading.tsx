@@ -4,7 +4,6 @@ import { InfoSkeleton } from "./info";
 import { ParticipantsSkeleton } from "./participants";
 import { TimerSkeleton } from "./timer";
 import { ToolbarSkeleton } from "./toolbar";
-
 import { ZoomSkeleton } from "./zoom";
 
 export const Loading = () => {
