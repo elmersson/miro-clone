@@ -35,6 +35,7 @@ export const Note = ({ layer, onPointerDown, id, selectionColor, setIsEditingTex
   const updateValue = useMutation(({ storage }, newValue: string) => {
     const liveLayers = storage.get("layers");
 
+    // @ts-ignore
     liveLayers.get(id)?.set("value", newValue);
   }, []);
 
