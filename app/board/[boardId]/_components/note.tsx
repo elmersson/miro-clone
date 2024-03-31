@@ -1,11 +1,10 @@
 import { Kalam } from "next/font/google";
+import { Dispatch, SetStateAction } from "react";
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
-import { NoteLayer } from "@/types/canvas";
 import { cn, colorToCss, getContrastingTextColor } from "@/lib/utils";
 import { useMutation } from "@/liveblocks.config";
-import { useTheme } from "next-themes";
-import { Dispatch, SetStateAction } from "react";
+import { NoteLayer } from "@/types/canvas";
 
 const font = Kalam({
   subsets: ["latin"],
@@ -35,7 +34,7 @@ export const Note = ({ layer, onPointerDown, id, selectionColor, setIsEditingTex
   const updateValue = useMutation(({ storage }, newValue: string) => {
     const liveLayers = storage.get("layers");
 
-    // @ts-ignore
+    // @ts-expect-error: because
     liveLayers.get(id)?.set("value", newValue);
   }, []);
 

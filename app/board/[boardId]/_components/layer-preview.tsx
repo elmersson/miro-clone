@@ -2,16 +2,16 @@
 
 import { Dispatch, PointerEvent, SetStateAction, memo } from "react";
 
-import { LayerType } from "@/types/canvas";
+import { colorToCss } from "@/lib/utils";
 import { useStorage } from "@/liveblocks.config";
+import { LayerType } from "@/types/canvas";
 
-import { Text } from "./text";
 import { Ellipse } from "./ellipse";
 import { Note } from "./note";
 import { Path } from "./path";
-import { Rectangle } from "./rectangle";
-import { colorToCss } from "@/lib/utils";
 import { Pew } from "./pew";
+import { Rectangle } from "./rectangle";
+import { Text } from "./text";
 
 interface LayerPreviewProps {
   id: string;

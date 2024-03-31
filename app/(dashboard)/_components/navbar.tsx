@@ -1,9 +1,10 @@
 "use client";
 
 import { OrganizationSwitcher, UserButton, useOrganization } from "@clerk/nextjs";
-import { SearchInput } from "./search-input";
-import { InviteButton } from "./invite-button";
 import { useTheme } from "next-themes";
+
+import { InviteButton } from "./invite-button";
+import { SearchInput } from "./search-input";
 
 export const Navbar = () => {
   const { organization } = useOrganization();
@@ -18,7 +19,7 @@ export const Navbar = () => {
       <div className="hidden lg:flex lg:flex-1">
         <SearchInput />
       </div>
-      <div className="block lg:hidden flex-1">
+      <div className="block flex-1 lg:hidden">
         <OrganizationSwitcher
           hidePersonal
           appearance={{

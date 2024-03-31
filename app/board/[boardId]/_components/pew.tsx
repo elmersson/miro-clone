@@ -1,5 +1,6 @@
-import { PewLayer } from "@/types/canvas";
 import Image from "next/image";
+
+import { PewLayer } from "@/types/canvas";
 
 interface PewProps {
   id: string;
@@ -21,7 +22,7 @@ export const Pew = ({ layer, onPointerDown, id, selectionColor }: PewProps) => {
         outline: selectionColor ? `1px solid ${selectionColor}` : "none",
       }}
     >
-      <Image src="/bullet-hole.svg" alt="Board logo" height={50} width={50} className="filter dark:invert" />
+      <Image src="/bullet-hole.svg" alt="Board logo" height={50} width={50} className="dark:invert" />
     </foreignObject>
   );
 };

@@ -1,7 +1,8 @@
 import { Room } from "@/components/room";
+import { Id } from "@/convex/_generated/dataModel";
+
 import { Canvas } from "./_components/canvas";
 import { Loading } from "./_components/loading";
-import { Id } from "@/convex/_generated/dataModel";
 
 interface BoardIdPageProps {
   params: {

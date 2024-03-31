@@ -1,6 +1,8 @@
 import { Circle, Pencil, Redo2, Square, StickyNote, Type, Undo2, Drill, MousePointer2 } from "lucide-react";
-import { ToolButton } from "./tool-button";
+
 import { CanvasState, CanvasMode, LayerType } from "@/types/canvas";
+
+import { ToolButton } from "./tool-button";
 
 interface ToolbarProps {
   canvasState: CanvasState;
@@ -12,8 +14,8 @@ interface ToolbarProps {
 }
 export const Toolbar = ({ canvasState, setCanvasState, undo, redo, canUndo, canRedo }: ToolbarProps) => {
   return (
-    <div className="absolute top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4">
-      <div className="bg-white dark:bg-black rounded-md p-1.5 flex gap-y-1 flex-col items-center shadow-md">
+    <div className="absolute left-2 top-[50%] flex -translate-y-[50%] flex-col gap-y-4">
+      <div className="flex flex-col items-center gap-y-1 rounded-md bg-white p-1.5 shadow-md dark:bg-black">
         <ToolButton
           label="Select"
           icon={MousePointer2}
@@ -87,7 +89,7 @@ export const Toolbar = ({ canvasState, setCanvasState, undo, redo, canUndo, canR
           isActive={canvasState.mode === CanvasMode.Inserting && canvasState.layerType === LayerType.Pew}
         />
       </div>
-      <div className="bg-white dark:bg-black rounded-md p-1.5 flex flex-col items-center shadow-md">
+      <div className="flex flex-col items-center rounded-md bg-white p-1.5 shadow-md dark:bg-black">
         <ToolButton label="Undo" icon={Undo2} onClick={undo} isDisabled={!canUndo} />
         <ToolButton label="Redo" icon={Redo2} onClick={redo} isDisabled={!canRedo} />
       </div>
@@ -97,6 +99,6 @@ export const Toolbar = ({ canvasState, setCanvasState, undo, redo, canUndo, canR
 
 export const ToolbarSkeleton = () => {
   return (
-    <div className="absolute top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4 bg-white dark:bg-black h-[360px] w-[52px] shadow-md rounded-md" />
+    <div className="absolute left-2 top-[50%] flex h-[360px] w-[52px] -translate-y-[50%] flex-col gap-y-4 rounded-md bg-white shadow-md dark:bg-black" />
   );
 };

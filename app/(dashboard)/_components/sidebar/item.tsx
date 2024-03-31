@@ -1,9 +1,10 @@
 "use client";
 
-import { Hint } from "@/components/hint";
-import { cn } from "@/lib/utils";
 import { useOrganization, useOrganizationList } from "@clerk/nextjs";
 import Image from "next/image";
+
+import { Hint } from "@/components/hint";
+import { cn } from "@/lib/utils";
 
 interface ItemProps {
   id: string;
@@ -24,7 +25,7 @@ export const Item = ({ id, name, imageUrl }: ItemProps) => {
   };
 
   return (
-    <div className="aspect-square relative">
+    <div className="relative aspect-square">
       <Hint label={name} side="right" align="start" sideOffset={18}>
         <Image
           fill

@@ -4,9 +4,7 @@ import { ConvexHttpClient } from "convex/browser";
 
 import { api } from "@/convex/_generated/api";
 
-const convex = new ConvexHttpClient(
-  process.env.NEXT_PUBLIC_CONVEX_URL!
-);
+const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
 const liveblocks = new Liveblocks({
   secret: process.env.LIVEBLOCKS_SECRET_KEY!,
@@ -32,10 +30,7 @@ export async function POST(request: Request) {
     picture: user.imageUrl,
   };
 
-  const session = liveblocks.prepareSession(
-    user.id,
-    { userInfo }
-  );
+  const session = liveblocks.prepareSession(user.id, { userInfo });
 
   if (room) {
     session.allow(room, session.FULL_ACCESS);
@@ -43,4 +38,4 @@ export async function POST(request: Request) {
 
   const { status, body } = await session.authorize();
   return new Response(body, { status });
-};
+}

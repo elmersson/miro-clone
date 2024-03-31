@@ -2,9 +2,9 @@
 
 import { memo } from "react";
 
-import { LayerType, Side, XYWH } from "@/types/canvas";
-import { useSelf, useStorage } from "@/liveblocks.config";
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
+import { useSelf, useStorage } from "@/liveblocks.config";
+import { LayerType, Side, XYWH } from "@/types/canvas";
 
 interface SelectionBoxProps {
   onResizeHandlePointerDown: (corner: Side, initialBounds: XYWH) => void;
@@ -60,7 +60,7 @@ export const SelectionBox = memo(({ onResizeHandlePointerDown }: SelectionBoxPro
   return (
     <>
       <rect
-        className="fill-transparent stroke-blue-500 stroke-1 pointer-events-none"
+        className="pointer-events-none fill-transparent stroke-blue-500 stroke-1"
         style={{
           transform: `translate(${bounds.x}px, ${bounds.y}px)`,
         }}
@@ -73,7 +73,7 @@ export const SelectionBox = memo(({ onResizeHandlePointerDown }: SelectionBoxPro
         rect.cardinal.map((direction, i) => (
           <rect
             key={i}
-            className="fill-white stroke-1 stroke-blue-500"
+            className="fill-white stroke-blue-500 stroke-1"
             x={0}
             y={0}
             style={{

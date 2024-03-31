@@ -1,12 +1,12 @@
 "use client";
 
-import { toast } from "sonner";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
-import { cn } from "@/lib/utils";
 import { api } from "@/convex/_generated/api";
 import useApiMutation from "@/hooks/use-api-mutation";
+import { cn } from "@/lib/utils";
 
 interface NewBoardButtonProps {
   orgId: string;
@@ -39,8 +39,8 @@ export const NewBoardButton = ({ orgId, disabled }: NewBoardButtonProps) => {
       )}
     >
       <div />
-      <Plus className="h-12 w-12 text-white stroke-1" />
-      <p className="text-sm text-white font-light">New board</p>
+      <Plus className="h-12 w-12 stroke-1 text-white" />
+      <p className="text-sm font-light text-white">New board</p>
     </button>
   );
 };

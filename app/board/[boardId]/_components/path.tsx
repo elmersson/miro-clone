@@ -1,6 +1,7 @@
 import getStroke from "perfect-freehand";
-import { getSvgPathFromStroke } from "@/lib/utils";
 import { PointerEvent } from "react";
+
+import { getSvgPathFromStroke } from "@/lib/utils";
 
 interface PathProps {
   x: number;
