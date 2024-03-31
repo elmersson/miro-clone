@@ -12,6 +12,9 @@
   ],
   "rules": {
     "tailwindcss/no-custom-classname": "off",
+    "tailwindcss/enforces-negative-arbitrary-values": "off",
+    "no-empty-pattern": "off",
+    "import/named": "off",
     "import/order": [
       "error",
       {
@@ -24,13 +27,6 @@
         "distinctGroup": true
       }
     ],
-    "react/no-this-in-sfc": "error",
-    "@typescript-eslint/no-unused-vars": [
-      "warn",
-      {
-        "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^_"
-      }
-    ]
+    "react/no-this-in-sfc": "error"
   }
 }

@@ -1,8 +1,8 @@
 "use client";
 
-import { toast } from "sonner";
-import { Link2, Pencil, Trash2 } from "lucide-react";
 import { DropdownMenuContentProps } from "@radix-ui/react-dropdown-menu";
+import { Link2, Pencil, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 
 import {
   DropdownMenu,
@@ -11,12 +11,13 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { api } from "@/convex/_generated/api";
-import useApiMutation from "@/hooks/use-api-mutation";
-import { Button } from "./ui/button";
 import { Id } from "@/convex/_generated/dataModel";
-import { ConfirmModal } from "./confirm-modal";
+import useApiMutation from "@/hooks/use-api-mutation";
 import { useRenameModal } from "@/store/use-rename-modal";
+
+import { ConfirmModal } from "./confirm-modal";
 import { ModeToggleText } from "./mode-toggle";
+import { Button } from "./ui/button";
 
 interface ActionsProps {
   children: React.ReactNode;
@@ -48,12 +49,12 @@ export const Actions = ({ children, side, sideOffset, id, title, modeToggle = tr
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <DropdownMenuContent onClick={(e) => e.stopPropagation()} side={side} sideOffset={sideOffset} className="w-60">
-        <DropdownMenuItem onClick={onCopyLink} className="p-3 cursor-pointer">
-          <Link2 className="h-4 w-4 mr-2" />
+        <DropdownMenuItem onClick={onCopyLink} className="cursor-pointer p-3">
+          <Link2 className="mr-2 h-4 w-4" />
           Copy board link
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onOpen(id, title)} className="p-3 cursor-pointer">
-          <Pencil className="h-4 w-4 mr-2" />
+        <DropdownMenuItem onClick={() => onOpen(id, title)} className="cursor-pointer p-3">
+          <Pencil className="mr-2 h-4 w-4" />
           Rename
         </DropdownMenuItem>
         <ConfirmModal
@@ -62,8 +63,8 @@ export const Actions = ({ children, side, sideOffset, id, title, modeToggle = tr
           disabled={pending}
           onConfirm={onDelete}
         >
-          <Button variant="ghost" className="p-3 cursor-pointer text-sm w-full justify-start font-normal">
-            <Trash2 className="h-4 w-4 mr-2" />
+          <Button variant="ghost" className="w-full cursor-pointer justify-start p-3 text-sm font-normal">
+            <Trash2 className="mr-2 h-4 w-4" />
             Delete
           </Button>
         </ConfirmModal>

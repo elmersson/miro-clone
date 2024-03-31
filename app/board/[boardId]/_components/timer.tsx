@@ -1,9 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Pause, Play } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 interface TimerProps {
   startTimer: (duration: number) => void;
@@ -66,8 +67,8 @@ export const Timer = ({ startTimer, pauseTimer }: TimerProps) => {
   const Icon = isPlaying ? <Pause size={16} /> : <Play size={16} />;
 
   return (
-    <div className="absolute h-12 top-16 right-2 bg-white dark:bg-black rounded-md p-3 flex items-center shadow-md">
-      <div className="flex gap-x-2 items-center">
+    <div className="absolute right-2 top-16 flex h-12 items-center rounded-md bg-white p-3 shadow-md dark:bg-black">
+      <div className="flex items-center gap-x-2">
         <Input type="time" value={formatTime(seconds)} onChange={handleTimeChange} />
         <Button variant="outline" size="sm" onClick={toggleTimer}>
           {Icon}
@@ -79,6 +80,6 @@ export const Timer = ({ startTimer, pauseTimer }: TimerProps) => {
 
 export const TimerSkeleton = () => {
   return (
-    <div className="absolute h-12 top-16 right-2 bg-white dark:bg-black rounded-md p-3 flex items-center shadow-md w-[100px]" />
+    <div className="absolute right-2 top-16 flex h-12 w-[100px] items-center rounded-md bg-white p-3 shadow-md dark:bg-black" />
   );
 };

@@ -1,16 +1,16 @@
 "use client";
 
-import { memo } from "react";
 import { BringToFront, SendToBack, Trash2 } from "lucide-react";
+import { memo } from "react";
 
 import { Hint } from "@/components/hint";
-import { Camera, Color } from "@/types/canvas";
 import { Button } from "@/components/ui/button";
-import { useMutation, useSelf } from "@/liveblocks.config";
+import { useDeleteLayers } from "@/hooks/use-delete-layers";
 import { useSelectionBounds } from "@/hooks/use-selection-bounds";
+import { useMutation, useSelf } from "@/liveblocks.config";
+import { Camera, Color } from "@/types/canvas";
 
 import { ColorPicker } from "./color-picker";
-import { useDeleteLayers } from "@/hooks/use-delete-layers";
 
 interface SelectionToolsProps {
   camera: Camera;
@@ -67,7 +67,7 @@ export const SelectionTools = memo(({ camera, setLastUsedColor, zoom }: Selectio
       setLastUsedColor(fill);
 
       selection.forEach((id) => {
-        // @ts-ignore
+        // @ts-expect-error: because
         liveLayers.get(id)?.set("fill", fill);
       });
     },
@@ -87,7 +87,7 @@ export const SelectionTools = memo(({ camera, setLastUsedColor, zoom }: Selectio
 
   return (
     <div
-      className="absolute p-3 rounded-xl bg-white dark:bg-black shadow-sm border flex select-none"
+      className="absolute flex select-none rounded-xl border bg-white p-3 shadow-sm dark:bg-black"
       style={{
         transform: `translate(
           calc(${x}px - 50%),
@@ -108,7 +108,7 @@ export const SelectionTools = memo(({ camera, setLastUsedColor, zoom }: Selectio
           </Button>
         </Hint>
       </div>
-      <div className="flex items-center pl-2 ml-2 border-l border-neutral-200">
+      <div className="ml-2 flex items-center border-l border-neutral-200 pl-2">
         <Hint label="Delete">
           <Button variant="board" size="icon" onClick={deleteLayers}>
             <Trash2 />

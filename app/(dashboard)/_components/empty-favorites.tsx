@@ -2,10 +2,10 @@ import Image from "next/image";
 
 export const EmptyFavorites = () => {
   return (
-    <div className="h-full flex flex-col items-center justify-center">
+    <div className="flex h-full flex-col items-center justify-center">
       <Image src="/empty-favorites.svg" height={140} width={140} alt="Empty" />
-      <h2 className="text-2xl font-semibold mt-6">No favorite boards!</h2>
-      <p className="text-muted-foreground text-sm mt-2">Try favoriting a board</p>
+      <h2 className="mt-6 text-2xl font-semibold">No favorite boards!</h2>
+      <p className="mt-2 text-sm text-muted-foreground">Try favoriting a board</p>
     </div>
   );
 };

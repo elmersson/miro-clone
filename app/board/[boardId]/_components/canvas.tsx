@@ -1,9 +1,20 @@
 "use client";
 
+import { LiveObject } from "@liveblocks/client";
 import { nanoid } from "nanoid";
 import { useCallback, useMemo, useState, useEffect, PointerEvent, WheelEvent } from "react";
-import { LiveObject } from "@liveblocks/client";
 
+import { Id } from "@/convex/_generated/dataModel";
+import { useDeleteLayers } from "@/hooks/use-delete-layers";
+import { useDisableScrollBounce } from "@/hooks/use-disable-scroll-bounce";
+import {
+  colorToCss,
+  connectionIdToColor,
+  findIntersectingLayersWithRectangle,
+  penPointsToPathLayer,
+  pointerEventToCanvasPoint,
+  resizeBounds,
+} from "@/lib/utils";
 import {
   useHistory,
   useCanUndo,
@@ -13,28 +24,17 @@ import {
   useOthersMapped,
   useSelf,
 } from "@/liveblocks.config";
-import {
-  colorToCss,
-  connectionIdToColor,
-  findIntersectingLayersWithRectangle,
-  penPointsToPathLayer,
-  pointerEventToCanvasPoint,
-  resizeBounds,
-} from "@/lib/utils";
 import { Camera, CanvasMode, CanvasState, Color, LayerType, Point, Side, XYWH } from "@/types/canvas";
-import { useDisableScrollBounce } from "@/hooks/use-disable-scroll-bounce";
-import { useDeleteLayers } from "@/hooks/use-delete-layers";
 
+import { CursorsPresence } from "./cursors-presence";
 import { Info } from "./info";
-import { Path } from "./path";
-import { Toolbar } from "./toolbar";
-import { Participants } from "./participants";
 import { LayerPreview } from "./layer-preview";
+import { Participants } from "./participants";
+import { Path } from "./path";
 import { SelectionBox } from "./selection-box";
 import { SelectionTools } from "./selection-tools";
-import { CursorsPresence } from "./cursors-presence";
-import { Id } from "@/convex/_generated/dataModel";
 import { Timer } from "./timer";
+import { Toolbar } from "./toolbar";
 import { Zoom } from "./zoom";
 
 const MAX_LAYERS = 100;
@@ -352,7 +352,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
 
       setCanvasState({ origin: point, mode: CanvasMode.Pressing });
     },
-    [camera, canvasState.mode, setCanvasState, startDrawing]
+    [camera, canvasState.mode, setCanvasState, startDrawing, zoom]
   );
 
   const onPointerUp = useMutation(
@@ -432,24 +432,24 @@ export const Canvas = ({ boardId }: CanvasProps) => {
             } else {
               history.undo();
             }
-            break;
           }
+          break;
         }
 
         case "c": {
           if (e.ctrlKey || e.metaKey) {
             e.preventDefault();
             copyLayer();
-            return;
           }
+          break;
         }
 
         case "v": {
           if (e.ctrlKey || e.metaKey) {
             e.preventDefault();
             pasteLayer();
-            return;
           }
+          break;
         }
       }
     }
@@ -459,7 +459,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     return () => {
       document.removeEventListener("keydown", onKeyDown);
     };
-  }, [deleteLayers, history, isEditingText]);
+  }, [deleteLayers, history, isEditingText, copyLayer, pasteLayer]);
 
   const startTimer = useMutation(({ setMyPresence }, duration: number) => {
     const startTime = Date.now();
@@ -498,7 +498,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
   };
 
   return (
-    <main className="h-full w-full relative bg-neutral-100 dark:bg-neutral-900 touch-none">
+    <main className="relative h-full w-full touch-none bg-neutral-100 dark:bg-neutral-900">
       <Info boardId={boardId} />
       <Participants />
       <Timer startTimer={startTimer} pauseTimer={pauseTimer} />

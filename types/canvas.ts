@@ -16,7 +16,7 @@ export enum LayerType {
   Text,
   Note,
   Pew,
-};
+}
 
 export type RectangleLayer = {
   type: LayerType.Rectangle;
@@ -94,7 +94,7 @@ export enum Side {
   Bottom = 2,
   Left = 4,
   Right = 8,
-};
+}
 
 export type TimerState = {
   mode: CanvasMode.Timer;
@@ -103,35 +103,36 @@ export type TimerState = {
   isPlaying: boolean;
 };
 
-export type CanvasState = 
+export type CanvasState =
   | {
       mode: CanvasMode.None;
     }
   | {
-      mode: CanvasMode.SelectionNet,
+      mode: CanvasMode.SelectionNet;
       origin: Point;
       current?: Point;
     }
   | {
-      mode: CanvasMode.Translating,
+      mode: CanvasMode.Translating;
       current: Point;
     }
   | {
-      mode: CanvasMode.Inserting,
+      mode: CanvasMode.Inserting;
       layerType: LayerType.Ellipse | LayerType.Rectangle | LayerType.Text | LayerType.Note | LayerType.Pew;
     }
   | {
-      mode: CanvasMode.Pencil,
+      mode: CanvasMode.Pencil;
     }
   | {
-      mode: CanvasMode.Pressing,
+      mode: CanvasMode.Pressing;
       origin: Point;
     }
   | {
-      mode: CanvasMode.Resizing,
+      mode: CanvasMode.Resizing;
       initialBounds: XYWH;
       corner: Side;
-    } | TimerState;
+    }
+  | TimerState;
 
 export enum CanvasMode {
   None,
@@ -141,7 +142,7 @@ export enum CanvasMode {
   Inserting,
   Resizing,
   Pencil,
-  Timer
-};
+  Timer,
+}
 
 export type Layer = RectangleLayer | EllipseLayer | PathLayer | TextLayer | NoteLayer | PewLayer;

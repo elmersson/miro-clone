@@ -49,7 +49,7 @@ export function ModeToggleText() {
       <Button
         variant="outline"
         size="icon"
-        className="border-transparent w-full flex flex-row gap-2 justify-start"
+        className="flex w-full flex-row justify-start gap-2 border-transparent"
         onClick={handleClick}
       >
         {resolvedTheme === "light" ? (
