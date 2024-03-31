@@ -67,6 +67,7 @@ export const SelectionTools = memo(({ camera, setLastUsedColor, zoom }: Selectio
       setLastUsedColor(fill);
 
       selection.forEach((id) => {
+        // @ts-ignore
         liveLayers.get(id)?.set("fill", fill);
       });
     },

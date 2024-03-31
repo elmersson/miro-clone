@@ -5,11 +5,12 @@ import { PointerEvent } from "react";
 
 
 const COLORS = [
-  "#DC2626", 
-  "#D97706", 
-  "#059669", 
-  "#7C3AED", 
-  "#DB2777"
+  "#da3a2d", 
+  "#ec804f", 
+  "#7bca8f",
+  "#65a6da",
+  "#9060ee", 
+  "#E892A2"
 ];
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
