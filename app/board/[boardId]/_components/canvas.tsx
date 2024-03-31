@@ -35,6 +35,7 @@ import { SelectionBox } from "./selection-box";
 import { SelectionTools } from "./selection-tools";
 import { Timer } from "./timer";
 import { Toolbar } from "./toolbar";
+
 import { Zoom } from "./zoom";
 
 const MAX_LAYERS = 100;

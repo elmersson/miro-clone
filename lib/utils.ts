@@ -5,6 +5,7 @@ import { twMerge } from "tailwind-merge";
 import { Camera, Color, Layer, LayerType, PathLayer, Point, Side, XYWH } from "@/types/canvas";
 
 const COLORS = ["#da3a2d", "#ec804f", "#7bca8f", "#65a6da", "#9060ee", "#E892A2"];
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
