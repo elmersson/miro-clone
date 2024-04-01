@@ -37,7 +37,7 @@ import { Timer } from "./timer";
 import { Toolbar } from "./toolbar";
 import { Zoom } from "./zoom";
 
-const MAX_LAYERS = 100;
+const MAX_LAYERS = 1000;
 
 interface CanvasProps {
   boardId: Id<"boards">;
